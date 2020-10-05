@@ -367,7 +367,7 @@ decl_module! {
             let target_did = Self::base_cdd_register_did(cdd_id, target_account, vec![])?;
 
             // Add CDD claim for the target
-            let cdd_claim = Claim::CustomerDueDiligence(CddId::new(target_did, target_did.to_bytes().into()));
+            let cdd_claim = Claim::CustomerDueDiligence(CddId::new(target_did, target_did.to_bytes()[..16].into()));
             Self::base_add_claim(target_did, cdd_claim, cdd_id, None);
 
             Ok(())
