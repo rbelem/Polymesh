@@ -1125,6 +1125,29 @@ dependencies = [
 [[package]]
 name = "cryptography"
 version = "0.1.0"
+source = "git+https://github.com/PolymathNetwork/cryptography.git?branch=CRYP-171/Schnorrkel_for_WASM#af63a0324410b9ea7a5946cce83871691944be71"
+dependencies = [
+ "blake2",
+ "bulletproofs",
+ "byteorder 1.3.4",
+ "curve25519-dalek 2.1.0",
+ "failure",
+ "lazy_static",
+ "log",
+ "merlin",
+ "parity-scale-codec",
+ "rand 0.7.3",
+ "rand_chacha 0.2.2",
+ "rand_core 0.5.1",
+ "schnorrkel",
+ "sha3 0.8.2",
+ "sp-std 2.0.0-rc6",
+ "zeroize",
+]
+
+[[package]]
+name = "cryptography"
+version = "0.1.0"
 source = "git+https://github.com/PolymathNetwork/cryptography.git?branch=master#dc249f0417168a67569000aefea2ed930b7cfd73"
 dependencies = [
  "blake2",
@@ -4213,7 +4236,7 @@ name = "pallet-confidential"
 version = "0.1.0"
 dependencies = [
  "bulletproofs",
- "cryptography",
+ "cryptography 0.1.0 (git+https://github.com/PolymathNetwork/cryptography.git?branch=master)",
  "curve25519-dalek 2.1.0",
  "frame-support",
  "frame-system",
@@ -4391,7 +4414,7 @@ dependencies = [
 name = "pallet-identity"
 version = "0.1.0"
 dependencies = [
- "cryptography",
+ "cryptography 0.1.0 (git+https://github.com/PolymathNetwork/cryptography.git?branch=CRYP-171/Schnorrkel_for_WASM)",
  "frame-benchmarking",
  "frame-support",
  "frame-system",
@@ -5337,7 +5360,7 @@ name = "polymesh-primitives"
 version = "2.0.0"
 dependencies = [
  "blake2",
- "cryptography",
+ "cryptography 0.1.0 (git+https://github.com/PolymathNetwork/cryptography.git?branch=master)",
  "curve25519-dalek 2.1.0",
  "frame-support",
  "frame-system",
@@ -5550,7 +5573,7 @@ name = "polymesh-runtime-tests"
 version = "1.0.0"
 dependencies = [
  "chrono",
- "cryptography",
+ "cryptography 0.1.0 (git+https://github.com/PolymathNetwork/cryptography.git?branch=master)",
  "env_logger",
  "frame-benchmarking",
  "frame-support",
