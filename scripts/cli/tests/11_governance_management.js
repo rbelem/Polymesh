@@ -28,16 +28,11 @@ async function main() {
   await sendTx(dave, api.tx.staking.bond(bob.publicKey, 20000, "Staked"));
   // Create a PIP which is then amended.
   const setLimit = api.tx.pips.setActivePipLimit(42);
-  // Create a PIP, but first placing the cool-off period.
-  await sendTx(alice, api.tx.sudo.sudo(api.tx.pips.setProposalCoolOffPeriod(10)));
 
   let firstPipCount = await api.query.pips.pipIdSequence();
   await sendTx(bob, api.tx.pips.propose(setLimit, 10000000000, "google.com", "first"));
 
   await sendTx(bob, api.tx.pips.amendProposal(firstPipCount, "www.facebook.com", null));
- 
-  // Create a PIP, but first remove the cool-off period.
-  await sendTx(alice, api.tx.sudo.sudo(api.tx.pips.setProposalCoolOffPeriod(0)));
 
   let secondPipCount = await api.query.pips.pipIdSequence();
   await sendTx(bob, api.tx.pips.propose(setLimit, 10000000000, "google.com", "second"));
