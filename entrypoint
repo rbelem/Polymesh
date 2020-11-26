@@ -52,6 +52,7 @@ if [ "${OPERATOR}" = "y" ]; then
         exit 1
     fi
 
+    ADDRESS_LIST=$(build_address_list ${SENTRY_NODES})
     ARGS="${ARGS} --sentry-nodes ${ADDRESS_LIST}"
 
     ARGS="${ARGS} --reserved-nodes ${ADDRESS_LIST}"
