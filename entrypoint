@@ -1,0 +1,91 @@
+#!/bin/sh
+
+CMD="${@}"
+
+set -e
+
+ARGS=""
+
+fetch_peerid() {
+    NODE_ADDRESS=$1
+    curl \
+      -s \
+      -H "Content-Type: application/json" \
+      -d '{"id":1, "jsonrpc":"2.0", "method": "system_networkState", "params":[]}' \
+      http://${NODE_ADDRESS}:9933 \
+      | jq -r .result.peerId
+}
+
+build_p2p_address() {
+    ADDRESS=$1
+    PORT=$2
+    PEERID=$3
+    ADDRESS_TYPE=""
+
+    if expr "${ADDRESS}" : '[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*$' >/dev/null; then
+        ADDRESS_TYPE=ip4
+    else
+        ADDRESS_TYPE=dns4
+    fi
+
+    echo "/${ADDRESS_TYPE}/${ADDRESS}/tcp/${PORT}/p2p/${PEERID}"
+}
+
+build_address_list() {
+    NODES=$1
+    NODE_LIST=$(echo ${NODES} | sed -e 's/,/ /g')
+    ADDRESS_LIST=""
+    for node in $NODE_LIST; do
+        # peerid=$(fetch_peerid ${node})
+        peerid="111"
+        address=$(build_p2p_address ${node} 30333 ${peerId})
+        ADDRESS_LIST="${ADDRESS_LIST} ${address}"
+    done
+
+    echo ${ADDRESS_LIST}
+}
+
+if [ "${OPERATOR}" = "y" ]; then
+    ARGS="$ARGS --operator"
+    if [ -z ${SENTRY_NODES} ]; then
+        echo "SENTRY_NODES is empty. Add sentry nodes ip addresses commma separated"
+        exit 1
+    fi
+
+    ARGS="${ARGS} --sentry-nodes ${ADDRESS_LIST}"
+
+    ARGS="${ARGS} --reserved-nodes ${ADDRESS_LIST}"
+else
+    ADDRESS_LIST=$(build_address_list ${OPERATOR_NODES})
+    ARGS="${ARGS} --sentry ${ADDRESS_LIST}"
+fi
+
+if [ "${PROMETHEUS}" = "y" ]; then
+    # Uncomment to allow scraping of metrics from non-localhost addresses
+    ARGS="${ARGS} --prometheus-external"
+fi
+
+if [ "${UNSAFE_RPC}" = "y" ]; then
+    # Uncomment to allow interaction with the jsonrpc service from non-localhost addresses
+    ARGS="${ARGS} --unsafe-rpc-external"
+fi
+
+if [ "${UNSAFE_WS}" = "y" ]; then
+    # Uncomment to allow interaction with the websocket rpc service from non-localhost addresses
+    ARGS="${ARGS} --unsafe-ws-external"
+fi
+
+if [ -n "${RPC_CORS}" ]; then
+    # Uncomment this and next line to disable CORS checks for jsonrpc connections
+    ARGS="${ARGS} --rpc-cors ${RPC_CORS}"
+fi
+
+if [ -n "${RPC_METHODS}" ]; then
+    # Uncomment this and next line to allow all RPC methods via non-localhost jsonrpc or websocket
+    ARGS="${ARGS} --rpc-methods ${RPC_METHODS}"
+fi
+
+echo "exec polymesh \
+      --base-path /var/lib/polymesh \
+      --name ${OPERATOR_NAME} \
+      ${ARGS}"
