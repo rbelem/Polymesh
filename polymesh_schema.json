@@ -604,7 +604,6 @@
         "ProposalState": {
             "_enum": [
                 "Pending",
-                "Cancelled",
                 "Rejected",
                 "Scheduled",
                 "Failed",
