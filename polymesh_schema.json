@@ -631,8 +631,7 @@
             "id": "PipId",
             "proposal": "Call",
             "state": "ProposalState",
-            "proposer": "Proposer",
-            "cool_off_until": "u32"
+            "proposer": "Proposer"
         },
         "ProposalData": {
             "_enum": {
