@@ -3,6 +3,8 @@ version: "3.8"
 services:
   operator:
     image: rbelem/polymesh:latest
+    env_file:
+      - ./env.operator
     volumes:
       - operator:/var/lib/polymesh
     ports:
@@ -39,6 +41,8 @@ services:
         condition: any
   sentry:
     image: rbelem/polymesh:latest
+    env_file:
+      - ./env.sentry
     volumes:
       - sentry:/var/lib/polymesh
     ports:
