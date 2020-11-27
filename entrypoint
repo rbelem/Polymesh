@@ -93,4 +93,5 @@ fi
 exec polymesh \
     --base-path /var/lib/polymesh \
     --name ${OPERATOR_NAME} \
-    ${ARGS}
+    ${ARGS} \
+    ${@}
