@@ -90,7 +90,7 @@ if [ -n "${RPC_METHODS}" ]; then
     ARGS="${ARGS} --rpc-methods ${RPC_METHODS}"
 fi
 
-echo "exec polymesh \
-      --base-path /var/lib/polymesh \
-      --name ${OPERATOR_NAME} \
-      ${ARGS}"
+exec polymesh \
+    --base-path /var/lib/polymesh \
+    --name ${OPERATOR_NAME} \
+    ${ARGS}
