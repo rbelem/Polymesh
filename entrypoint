@@ -53,7 +53,10 @@ if [ "${SERVICE_TYPE}" = "operator" ]; then
         ARGS="${ARGS} --sentry-nodes ${ADDRESS_LIST}"
     fi
 
-    ARGS="${ARGS} --reserved-nodes ${ADDRESS_LIST}"
+    if [ "${RESERVED_ONLY}" = "y" ]; then
+        ADDRESS_LIST=$(build_address_list ${RESERVED_NODES})
+        ARGS="${ARGS} --reserved-nodes ${ADDRESS_LIST}"
+    fi
 elif [ "${SERVICE_TYPE}" = "sentry" ]; then
     ADDRESS_LIST=$(build_address_list ${OPERATOR_NODES})
     ARGS="${ARGS} --sentry ${ADDRESS_LIST}"
