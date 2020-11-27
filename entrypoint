@@ -47,13 +47,11 @@ build_address_list() {
 
 if [ "${SERVICE_TYPE}" = "operator" ]; then
     ARGS="$ARGS --operator"
-    if [ -z ${SENTRY_NODES} ]; then
-        echo "SENTRY_NODES is empty. Add sentry nodes ip addresses commma separated"
-        exit 1
-    fi
 
-    ADDRESS_LIST=$(build_address_list ${SENTRY_NODES})
-    ARGS="${ARGS} --sentry-nodes ${ADDRESS_LIST}"
+    if [ -n "${SENTRY_NODES}" ]; then
+        ADDRESS_LIST=$(build_address_list ${SENTRY_NODES})
+        ARGS="${ARGS} --sentry-nodes ${ADDRESS_LIST}"
+    fi
 
     ARGS="${ARGS} --reserved-nodes ${ADDRESS_LIST}"
 elif [ "${SERVICE_TYPE}" = "sentry" ]; then
